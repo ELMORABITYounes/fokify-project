@@ -10,8 +10,7 @@ export default class Search {
         try {
             const result = await axios(`${config.FORKIFY_API_SEARCH}${this.query}`);
             this.results = result.data.recipes;
-            console.log(this.results);
-        } catch (error) {
+        } catch (error) {   
             console.log(error);
         }
     }

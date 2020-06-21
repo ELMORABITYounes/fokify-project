@@ -1,12 +1,19 @@
 import { elements } from './base';
 
-export const getInput = () => elements.searchInput.value
-export const clearInput = () => { elements.searchInput.value = "" }
+export const getInput = () => elements.searchInput.value;
+export const clearInput = () => { elements.searchInput.value = "" };
 export const clearResults = () => {
-    elements.searchResultList.innerHTML = ""
+    elements.searchResultList.innerHTML = "";
     elements.searchResultPages.innerHTML = ""
-}
+};
 
+export const highlightSelected = (id) =>{
+    const resultsArr=Array.from(document.querySelectorAll(`.results__link`));
+    resultsArr.forEach((element)=>{
+        element.classList.remove("results__link--active");
+    });
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
+};
 
 const reduceTitleLength = (title, limit = 20) => {
     if (title.length > limit) {
@@ -19,7 +26,7 @@ const reduceTitleLength = (title, limit = 20) => {
         return newTitle + " ...";
     }
     return title;
-}
+};
 
 const renderRecipe = (recipe) => {
     const markup = `<li>
@@ -32,11 +39,11 @@ const renderRecipe = (recipe) => {
             <p class="results__author">${recipe.publisher}</p>
         </div>
     </a>
-</li>   `
+</li>   `;
 
     elements.searchResultList.insertAdjacentHTML("beforeend", markup)
 
-}
+};
 
 const createButton = (page, type) => `
 <button class="btn-inline results__btn--${type}" data-goto=${type === "prev" ? page - 1 : page + 1}>
@@ -45,7 +52,7 @@ const createButton = (page, type) => `
         <use href="img/icons.svg#icon-triangle-${type === "prev" ? "left" : "right"}"></use>
     </svg>
 </button>
-`
+`;
 
 
 const renderButtons = (page, numPerPage, resultsNum) => {
@@ -59,7 +66,7 @@ const renderButtons = (page, numPerPage, resultsNum) => {
         buttons = createButton(page, "prev")
     }
     elements.searchResultPages.insertAdjacentHTML("beforeend", buttons);
-}
+};
 
 
 export const renderResult = (recipes, page = 1, resPerPage = 10) => {
@@ -68,4 +75,4 @@ export const renderResult = (recipes, page = 1, resPerPage = 10) => {
 
     recipes.slice(start, end).forEach(renderRecipe);
     renderButtons(page, resPerPage, recipes.length);
-}
+};
